@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./styles.scss";
+import Calendar from "react-github-contribution-calendar";
+import axios from "axios";
 
-function App() {
+const baseURL= 'https://dpg.gg/test/calendar.json';
+
+export default function App() {
+
+  const [values, setValues] = useState([]);
+
+  useEffect(() => {
+    axios.get(baseURL).then((response) => {
+      setValues(response.data);
+    });
+  }, []);
+
+  const panelAttributes = { rx: 6, ry: 6 };
+
+  const until = new Date();
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Contribution Graph.</h1>
+      <Calendar
+        values={values}
+        panelAttributes={panelAttributes}
+        until={until}
+      />
     </div>
   );
 }
 
-export default App;
